@@ -15,14 +15,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.events_list);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //mRecyclerView = findViewById(R.id.events_list);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        //mRecyclerView.setHasFixedSize(true);
+
         // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        //mLayoutManager = new LinearLayoutManager(this);
+        //mRecyclerView.setLayoutManager(mLayoutManager);
+
+        // specify an adapter (see also next example)
+        //mAdapter = new MyAdapter(myDataset);
+        //smRecyclerView.setAdapter(mAdapter);
 
 
     }
