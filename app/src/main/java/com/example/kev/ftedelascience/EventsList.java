@@ -7,6 +7,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.support.v7.widget.RecyclerView;
+
+import java.io.InputStream;
+
+import static com.example.kev.ftedelascience.R.layout.fragment_events_list;
 
 
 /**
@@ -18,6 +23,12 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class EventsList extends Fragment {
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -54,17 +65,31 @@ public class EventsList extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        // specify an adapter (see also next example)
+
+        InputStream inputStream = getResources().openRawResource(R.raw.fresrfetedelascience18);
+        CSVFile file = new CSVFile(inputStream);
+        String[] myDataset = file.read();
+        mAdapter = new MyAdapter(myDataset);
+        mRecyclerView.setAdapter(mAdapter);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_events_list, container, false);
+        View view = inflater.inflate(fragment_events_list, container, false);
+        mRecyclerView = view.findViewById(R.id.events_list);
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
