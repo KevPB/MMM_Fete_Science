@@ -3,13 +3,17 @@ package com.example.kev.ftedelascience;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v7.widget.RecyclerView;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.kev.ftedelascience.R.layout.fragment_events_list;
 
@@ -27,6 +31,8 @@ public class EventsList extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private List<Events> events;
+    private View view;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -42,6 +48,14 @@ public class EventsList extends Fragment {
 
     public EventsList() {
         // Required empty public constructor
+    }
+
+    public List<Events> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Events> events) {
+        this.events = events;
     }
 
     /**
@@ -62,6 +76,25 @@ public class EventsList extends Fragment {
         return fragment;
     }
 
+
+    public List<Events> readEvents(){
+
+        List<Events> resultArray = new ArrayList<Events>();
+        InputStream inputStream = getResources().openRawResource(R.raw.fresrfetedelascience18);
+        CSVFile file = new CSVFile(inputStream);
+        String[] myDataset = file.read();
+        for(int i = 0; i<myDataset.length; i++){
+            String[] eventSplit = myDataset[i].split(",");
+            Events event = new Events(i,eventSplit[8],eventSplit[9],eventSplit[6],eventSplit[14]);
+            resultArray.add(event);
+        }
+        return resultArray;
+
+
+    }
+
+
+/*
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,14 +113,18 @@ public class EventsList extends Fragment {
         mAdapter = new MyAdapter(myDataset);
         mRecyclerView.setAdapter(mAdapter);
 
-    }
+    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(fragment_events_list, container, false);
+        view = inflater.inflate(fragment_events_list, container, false);
+        MainActivity activity = ((MainActivity)  getActivity());
         mRecyclerView = view.findViewById(R.id.events_list);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager((getActivity())));
+        events = readEvents();
+        mAdapter = new MyAdapter(events);
 
         return view;
     }

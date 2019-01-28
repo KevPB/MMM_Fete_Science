@@ -18,6 +18,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        EventsList eventsList = new EventsList();
+
         //mRecyclerView = findViewById(R.id.events_list);
 
         // use this setting to improve performance if you know that changes
